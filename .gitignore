@@ -2,6 +2,10 @@
 target/
 Cargo.lock
 
+# Rust generated files
+**/*.rs.bk
+*.pdb
+
 # IDE files
 .vscode/
 .idea/
