@@ -1,6 +1,7 @@
 // Eidolon Math Library - Main Library File
 // This file serves as the primary interface for the entire math library
 // It exports all mathematical systems and modules for external use
+// GitHub Actions will now test this on every push!
 
 // Export the bits system module
 pub mod bits;
