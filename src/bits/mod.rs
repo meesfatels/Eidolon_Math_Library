@@ -5,11 +5,8 @@
 // This file acts as the entry point for the bits system
 // It will import and organize all the bit-related functionality
 
-// TODO: Import specific bit operation modules as they are created
-// Example: pub mod basic_operations;
-// Example: pub mod rotation;
-// Example: pub mod counting;
-// Example: pub mod manipulation;
+// Import the bit operations module (temporarily commented out due to compilation issues)
+// pub mod bit_operations;
 
 // Re-export commonly used bit operations for easy access
 // This will be populated as we create the actual bit operation modules
