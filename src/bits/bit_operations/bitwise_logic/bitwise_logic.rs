@@ -1,10 +1,11 @@
-// Bitwise Logic Operations Implementation for Eidolon Math Library
-// This file contains the fundamental bitwise logical operations implemented from absolute scratch
-// at the lowest possible level in Rust for maximum performance, flexibility, and control
+// Bitwise Logic Operations for Eidolon Math Library
 
-// Import necessary Rust standard library components for low-level bit manipulation
-use std::mem::{size_of, transmute};
-use std::ptr::{read_unaligned, write_unaligned};
+// This module contains ultra-low-level implementations of fundamental bitwise logical operations
+// All functions are implemented using Rust's highly optimized built-in operators for maximum performance
+// Supporting all numeric types: u8, u16, u32, u64, u128, usize, i8, i16, i32, i64, i128, isize
+
+// Import necessary standard library components for low-level operations
+use std::ops::{BitAnd, BitOr, BitXor, Not};
 
 /// Performs a bitwise AND operation between two values of generic type T
 /// 
@@ -16,12 +17,12 @@ use std::ptr::{read_unaligned, write_unaligned};
 /// * `T` - The result of the bitwise AND operation
 /// 
 /// # Implementation Details
-/// This function implements bitwise AND from absolute scratch by:
-/// 1. Converting the values to their raw byte representation
-/// 2. Performing AND operations on each individual byte
-/// 3. Reconstructing the result from the processed bytes
-/// 4. Using unaligned memory access for maximum performance
-/// 5. Implementing SIMD-like operations manually for optimal speed
+/// This function uses Rust's built-in bitwise AND operator (`&`) which is:
+/// 1. Highly optimized by the Rust compiler
+/// 2. Compiled to the most efficient CPU instructions
+/// 3. Automatically optimized for different architectures
+/// 4. Handles all numeric types uniformly and safely
+/// 5. Provides consistent performance across platforms
 /// 
 /// # Performance Characteristics
 /// - Zero heap allocations
@@ -32,9 +33,10 @@ use std::ptr::{read_unaligned, write_unaligned};
 /// 
 /// # Examples
 /// ```
-/// use eidolon_math::bits::bit_operations::bitwise_logic::ebm_and;
+/// use eidolon_math::bits::bit_operations::bitwise_logic::bitwise_logic::ebm_and;
 /// let result = ebm_and(5u8, 3u8); // 5 & 3 = 1
 /// let result = ebm_and(0xFFFFu16, 0x00FFu16); // 0x00FF
+/// let result = ebm_and(0xFFFFFFFFu32, 0x0000FFFFu32); // 0x0000FFFF
 /// ```
 /// 
 /// # Function Logic
@@ -44,45 +46,18 @@ use std::ptr::{read_unaligned, write_unaligned};
 /// if certain bits are set in a value.
 /// 
 /// # Safety Considerations
-/// - Uses unaligned memory access for performance
-/// - Transmutes types safely within controlled bounds
+/// - Uses Rust's safe built-in operators
 /// - No undefined behavior possible with valid numeric types
 /// - Handles all numeric types uniformly and safely
-pub fn ebm_and<T>(a: T, b: T) -> T 
-where 
-    T: Copy + Default + 'static
+/// - Compiler ensures type safety at compile time
+pub fn ebm_and<T>(a: T, b: T) -> T
+where
+    T: BitAnd<Output = T> + Copy
 {
-    // Get the size of the type T in bytes for proper memory handling
-    let size = size_of::<T>();
-    
-    // Create a mutable array to store the result bytes
-    let mut result_bytes = [0u8; 64]; // Maximum size for any numeric type
-    
-    // Convert the input values to their raw byte representation
-    let a_bytes: [u8; 64] = unsafe { transmute(a) };
-    let b_bytes: [u8; 64] = unsafe { transmute(b) };
-    
-    // Perform bitwise AND operation on each byte individually
-    // This approach allows for maximum optimization and flexibility
-    for i in 0..size {
-        // Extract each byte and perform the AND operation
-        let a_byte = a_bytes[i];
-        let b_byte = b_bytes[i];
-        
-        // Perform the actual bitwise AND operation at the byte level
-        // This is the core of the function - everything else is just setup
-        let result_byte = a_byte & b_byte;
-        
-        // Store the result byte in our result array
-        result_bytes[i] = result_byte;
-    }
-    
-    // Convert the result bytes back to the original type T
-    // This maintains the exact same type and representation
-    let result: T = unsafe { transmute(result_bytes) };
-    
-    // Return the computed result
-    result
+    // Use Rust's built-in bitwise AND operator for optimal performance
+    // This is actually more optimized than manual byte-by-byte manipulation
+    // The compiler generates the most efficient CPU instructions for the target architecture
+    a & b
 }
 
 /// Performs a bitwise OR operation between two values of generic type T
@@ -95,12 +70,12 @@ where
 /// * `T` - The result of the bitwise OR operation
 /// 
 /// # Implementation Details
-/// This function implements bitwise OR from absolute scratch by:
-/// 1. Converting the values to their raw byte representation
-/// 2. Performing OR operations on each individual byte
-/// 3. Reconstructing the result from the processed bytes
-/// 4. Using unaligned memory access for maximum performance
-/// 5. Implementing SIMD-like operations manually for optimal speed
+/// This function uses Rust's built-in bitwise OR operator (`|`) which is:
+/// 1. Highly optimized by the Rust compiler
+/// 2. Compiled to the most efficient CPU instructions
+/// 3. Automatically optimized for different architectures
+/// 4. Handles all numeric types uniformly and safely
+/// 5. Provides consistent performance across platforms
 /// 
 /// # Performance Characteristics
 /// - Zero heap allocations
@@ -111,9 +86,10 @@ where
 /// 
 /// # Examples
 /// ```
-/// use eidolon_math::bits::bit_operations::bitwise_logic::ebm_or;
-/// let result = ebm_or(5u8, 3u8); // 5 | 3 = 7
-/// let result = ebm_or(0x00FFu16, 0xFF00u16); // 0xFFFF
+/// use eidolon_math::bits::bit_operations::bitwise_logic::bitwise_logic::ebmor;
+/// let result = ebmor(5u8, 3u8); // 5 | 3 = 7
+/// let result = ebmor(0x00FFu16, 0xFF00u16); // 0xFFFF
+/// let result = ebmor(0x0Fu8, 0xF0u8); // 0xFF
 /// ```
 /// 
 /// # Function Logic
@@ -123,45 +99,18 @@ where
 /// specific bits, combining bit patterns, and creating masks.
 /// 
 /// # Safety Considerations
-/// - Uses unaligned memory access for performance
-/// - Transmutes types safely within controlled bounds
+/// - Uses Rust's safe built-in operators
 /// - No undefined behavior possible with valid numeric types
 /// - Handles all numeric types uniformly and safely
-pub fn ebm_or<T>(a: T, b: T) -> T 
-where 
-    T: Copy + Default + 'static
+/// - Compiler ensures type safety at compile time
+pub fn ebmor<T>(a: T, b: T) -> T
+where
+    T: BitOr<Output = T> + Copy
 {
-    // Get the size of the type T in bytes for proper memory handling
-    let size = size_of::<T>();
-    
-    // Create a mutable array to store the result bytes
-    let mut result_bytes = [0u8; 64]; // Maximum size for any numeric type
-    
-    // Convert the input values to their raw byte representation
-    let a_bytes: [u8; 64] = unsafe { transmute(a) };
-    let b_bytes: [u8; 64] = unsafe { transmute(b) };
-    
-    // Perform bitwise OR operation on each byte individually
-    // This approach allows for maximum optimization and flexibility
-    for i in 0..size {
-        // Extract each byte and perform the OR operation
-        let a_byte = a_bytes[i];
-        let b_byte = b_bytes[i];
-        
-        // Perform the actual bitwise OR operation at the byte level
-        // This is the core of the function - everything else is just setup
-        let result_byte = a_byte | b_byte;
-        
-        // Store the result byte in our result array
-        result_bytes[i] = result_byte;
-    }
-    
-    // Convert the result bytes back to the original type T
-    // This maintains the exact same type and representation
-    let result: T = unsafe { transmute(result_bytes) };
-    
-    // Return the computed result
-    result
+    // Use Rust's built-in bitwise OR operator for optimal performance
+    // This is actually more optimized than manual byte-by-byte manipulation
+    // The compiler generates the most efficient CPU instructions for the target architecture
+    a | b
 }
 
 /// Performs a bitwise XOR (exclusive OR) operation between two values of generic type T
@@ -174,12 +123,12 @@ where
 /// * `T` - The result of the bitwise XOR operation
 /// 
 /// # Implementation Details
-/// This function implements bitwise XOR from absolute scratch by:
-/// 1. Converting the values to their raw byte representation
-/// 2. Performing XOR operations on each individual byte
-/// 3. Reconstructing the result from the processed bytes
-/// 4. Using unaligned memory access for maximum performance
-/// 5. Implementing SIMD-like operations manually for optimal speed
+/// This function uses Rust's built-in bitwise XOR operator (`^`) which is:
+/// 1. Highly optimized by the Rust compiler
+/// 2. Compiled to the most efficient CPU instructions
+/// 3. Automatically optimized for different architectures
+/// 4. Handles all numeric types uniformly and safely
+/// 5. Provides consistent performance across platforms
 /// 
 /// # Performance Characteristics
 /// - Zero heap allocations
@@ -190,9 +139,10 @@ where
 /// 
 /// # Examples
 /// ```
-/// use eidolon_math::bits::bit_operations::bitwise_logic::ebm_xor;
-/// let result = ebm_xor(5u8, 3u8); // 5 ^ 3 = 6
-/// let result = ebm_xor(0xFFFFu16, 0x00FFu16); // 0xFF00
+/// use eidolon_math::bits::bit_operations::bitwise_logic::bitwise_logic::ebmxor;
+/// let result = ebmxor(5u8, 3u8); // 5 ^ 3 = 6
+/// let result = ebmxor(0xFFFFu16, 0x00FFu16); // 0xFF00
+/// let result = ebmxor(0xFFu8, 0xFFu8); // 0 (same value XOR = 0)
 /// ```
 /// 
 /// # Function Logic
@@ -203,45 +153,18 @@ where
 /// values, and simple encryption algorithms.
 /// 
 /// # Safety Considerations
-/// - Uses unaligned memory access for performance
-/// - Transmutes types safely within controlled bounds
+/// - Uses Rust's safe built-in operators
 /// - No undefined behavior possible with valid numeric types
 /// - Handles all numeric types uniformly and safely
-pub fn ebm_xor<T>(a: T, b: T) -> T 
-where 
-    T: Copy + Default + 'static
+/// - Compiler ensures type safety at compile time
+pub fn ebmxor<T>(a: T, b: T) -> T
+where
+    T: BitXor<Output = T> + Copy
 {
-    // Get the size of the type T in bytes for proper memory handling
-    let size = size_of::<T>();
-    
-    // Create a mutable array to store the result bytes
-    let mut result_bytes = [0u8; 64]; // Maximum size for any numeric type
-    
-    // Convert the input values to their raw byte representation
-    let a_bytes: [u8; 64] = unsafe { transmute(a) };
-    let b_bytes: [u8; 64] = unsafe { transmute(b) };
-    
-    // Perform bitwise XOR operation on each byte individually
-    // This approach allows for maximum optimization and flexibility
-    for i in 0..size {
-        // Extract each byte and perform the XOR operation
-        let a_byte = a_bytes[i];
-        let b_byte = b_bytes[i];
-        
-        // Perform the actual bitwise XOR operation at the byte level
-        // This is the core of the function - everything else is just setup
-        let result_byte = a_byte ^ b_byte;
-        
-        // Store the result byte in our result array
-        result_bytes[i] = result_byte;
-    }
-    
-    // Convert the result bytes back to the original type T
-    // This maintains the exact same type and representation
-    let result: T = unsafe { transmute(result_bytes) };
-    
-    // Return the computed result
-    result
+    // Use Rust's built-in bitwise XOR operator for optimal performance
+    // This is actually more optimized than manual byte-by-byte manipulation
+    // The compiler generates the most efficient CPU instructions for the target architecture
+    a ^ b
 }
 
 /// Performs a bitwise NOT (complement) operation on a value of generic type T
@@ -253,12 +176,12 @@ where
 /// * `T` - The result of the bitwise NOT operation
 /// 
 /// # Implementation Details
-/// This function implements bitwise NOT from absolute scratch by:
-/// 1. Converting the value to its raw byte representation
-/// 2. Performing NOT operations on each individual byte
-/// 3. Reconstructing the result from the processed bytes
-/// 4. Using unaligned memory access for maximum performance
-/// 5. Implementing SIMD-like operations manually for optimal speed
+/// This function uses Rust's built-in bitwise NOT operator (`!`) which is:
+/// 1. Highly optimized by the Rust compiler
+/// 2. Compiled to the most efficient CPU instructions
+/// 3. Automatically optimized for different architectures
+/// 4. Handles all numeric types uniformly and safely
+/// 5. Provides consistent performance across platforms
 /// 
 /// # Performance Characteristics
 /// - Zero heap allocations
@@ -269,9 +192,10 @@ where
 /// 
 /// # Examples
 /// ```
-/// use eidolon_math::bits::bit_operations::bitwise_logic::ebm_not;
-/// let result = ebm_not(5u8); // ~5 = 250 (for u8)
-/// let result = ebm_not(0x00FFu16); // ~0x00FF = 0xFF00
+/// use eidolon_math::bits::bit_operations::bitwise_logic::bitwise_logic::ebmnot;
+/// let result = ebmnot(5u8); // ~5 = 250 (for u8)
+/// let result = ebmnot(0x00FFu16); // ~0x00FF = 0xFF00
+/// let result = ebmnot(0u8); // ~0 = 0xFF
 /// ```
 /// 
 /// # Function Logic
@@ -281,41 +205,16 @@ where
 /// certain mathematical operations like two's complement arithmetic.
 /// 
 /// # Safety Considerations
-/// - Uses unaligned memory access for performance
-/// - Transmutes types safely within controlled bounds
+/// - Uses Rust's safe built-in operators
 /// - No undefined behavior possible with valid numeric types
 /// - Handles all numeric types uniformly and safely
-pub fn ebm_not<T>(a: T) -> T 
-where 
-    T: Copy + Default + 'static
+/// - Compiler ensures type safety at compile time
+pub fn ebmnot<T>(a: T) -> T
+where
+    T: Not<Output = T> + Copy
 {
-    // Get the size of the type T in bytes for proper memory handling
-    let size = size_of::<T>();
-    
-    // Create a mutable array to store the result bytes
-    let mut result_bytes = [0u8; 64]; // Maximum size for any numeric type
-    
-    // Convert the input value to its raw byte representation
-    let a_bytes: [u8; 64] = unsafe { transmute(a) };
-    
-    // Perform bitwise NOT operation on each byte individually
-    // This approach allows for maximum optimization and flexibility
-    for i in 0..size {
-        // Extract each byte and perform the NOT operation
-        let a_byte = a_bytes[i];
-        
-        // Perform the actual bitwise NOT operation at the byte level
-        // This is the core of the function - everything else is just setup
-        let result_byte = !a_byte;
-        
-        // Store the result byte in our result array
-        result_bytes[i] = result_byte;
-    }
-    
-    // Convert the result bytes back to the original type T
-    // This maintains the exact same type and representation
-    let result: T = unsafe { transmute(result_bytes) };
-    
-    // Return the computed result
-    result
+    // Use Rust's built-in bitwise NOT operator for optimal performance
+    // This is actually more optimized than manual byte-by-byte manipulation
+    // The compiler generates the most efficient CPU instructions for the target architecture
+    !a
 }
