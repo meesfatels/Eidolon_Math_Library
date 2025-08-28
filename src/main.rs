@@ -5,8 +5,7 @@
 // Import the bits system module
 pub mod bits;
 
-// Re-export commonly used items from the bits system for easy access
-pub use bits::*;
+// Main entry point for the Eidolon Math Library
 
 // Main function - this will be used when building as a binary
 // For library usage, this won't be called
