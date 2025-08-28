@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        rust: [stable]
+        rust: [1.89]
         exclude:
           - os: windows-latest
             rust: nightly
@@ -30,6 +30,15 @@ jobs:
       uses: dtolnay/rust-toolchain@master
       with:
         toolchain: ${{ matrix.rust }}
+
+    - name: Show Rust version
+      run: rustc --version
+
+    - name: Show environment
+      run: |
+        echo "OS: ${{ runner.os }}"
+        echo "Rust version: $(rustc --version)"
+        echo "Cargo version: $(cargo --version)"
 
     - name: Cache dependencies
       uses: actions/cache@v4
